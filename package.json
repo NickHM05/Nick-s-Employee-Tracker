@@ -1,0 +1,19 @@
+{
+  "name": "nick-s-employee-tracker",
+  "version": "1.0.0",
+  "description": "AS A business owner I WANT to beable to view and manage the departments, roles, and employees in my company SO THAT I can organize and plan my business.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NickHM05/Nick-s-Employee-Tracker.git"
+  },
+  "author": "Nicholas Mamberger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NickHM05/Nick-s-Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/NickHM05/Nick-s-Employee-Tracker#readme"
+}
