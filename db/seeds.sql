@@ -9,19 +9,19 @@ VALUES
 INSERT INTO Role (Title, Salary, DepartmentId)
 VALUES
     ('CEO', '$300,000', 1),
-   2 ('Director of Engineering', '225,000', 2),
-   3 ('Lead Engineer', '$125,000', 2),
-   4 ('Engineer', '$77,000', 2),
+    ('Director of Engineering', '225,000', 2),
+    ('Lead Engineer', '$125,000', 2),
+    ('Engineer', '$77,000', 2),
     ('Engineering Intern', '$40,000', 2),
-   6 ('Sales Director', '$250,000', 3),
+    ('Sales Director', '$250,000', 3),
     ('Sales Lead Management', '$110,000', 3),
     ('Salesperson', '$80,000', 3),
-   9 ('CFO', '$275,000', 4),
+    ('CFO', '$275,000', 4),
     ('Head Accountant', '$110,000', 4),
-   11 ('Accountant', '$75,000', 4),
-  12  ('Corporate Attorney', '175,000', 5),
-  13  ('Contract Lawyer', '$100,000', 5),
-   14 ('Legal Assitant', '$50,000', 5);
+    ('Accountant', '$75,000', 4),
+    ('Corporate Attorney', '175,000', 5),
+    ('Contract Lawyer', '$100,000', 5),
+    ('Legal Assitant', '$50,000', 5);
 
 INSERT INTO Employee (First_Name, LastName, RoleId, ManagerId)
 VALUES
