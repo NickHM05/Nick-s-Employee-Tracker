@@ -120,7 +120,51 @@ const DepartmentView = asyn () => {
 }
 
 //Need to add the selection to view all the roles.
+const RoleView = async () => {
+    console.log('Role Menu');
+    try {
+        let query = 'SELECT * FROM role';
+        connection.query(query, function (err, res){
+            if (err) throw err;
+            let RoleArray = [];
+            res.forEach(role => RoleArray.push(role));
+            console.table(RoleArray);
+            initialize();
+        });
+    } catch (err) {
+        console.log(err);
+        initialize();
+    };
+}
 //Need to add the selection to add a new employee.
+    const employeeAdd = async () => {
+        try {
+            console.log('Add Employee');
+            let RolesAdded = await connection.query("SELECT * FROM role");
+            let ManagersAdded = await connection.query("SELECT * FROM Employee");
+            let Answer = await inquirer.prompt([
+            {name: 'FirstName',
+            type: 'input',
+            message: 'What is the Employees first name?'},
+            {name: 'LastName',
+            type: 'input',
+            message: 'What is the Employees last name?'},
+            {name: 'EmployeeRoleId',
+            type:'list'
+            choices:RolesAdded.map((role)+> {
+                return {
+                    name: role.title,
+                    value: role.id
+                }
+            }),
+        message:"What is the Employee's role ID?"
+    },
+    {
+
+    }
+            ])
+        }
+    }
 //Need to add the selection to add a new department.
 //Need to add the selection to add a new role.
 //Need to add the selection to update the role for a specific employee. 
