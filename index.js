@@ -48,7 +48,7 @@ const initialize = async () => {
                 EmployeeView();
                 break;
 
-            case 'View Department':
+            case 'View All Departments':
                 DepartmentView();
                 break;
 
@@ -270,7 +270,7 @@ const AddRole = async () => {
 //Need to add the selection to update the role for a specific employee.
 const updateEmployee = async () => {
     try {
-        console.log('Employee got an Update');
+        console.log('Employee Role got an Update');
         
         let employees = await connection.query("SELECT * FROM employee");
 
@@ -280,11 +280,11 @@ const updateEmployee = async () => {
                 type: 'list',
                 choices: employees.map((employeeName) => {
                     return {
-                        name: employeeName.first_name + " " + employeeName.last_name,
+                        name: employeeName.First_Name + " " + employeeName.Last_Name,
                         value: employeeName.id
                     }
                 }),
-                message: 'Please choose an employee to update.'
+                message: 'Please choose the employee role to update.'
             }
         ]);
 
