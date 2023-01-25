@@ -65,11 +65,11 @@ const initialize = async () => {
                 break
 
             case 'Add Role':
-                roleAdd();
+                AddRole();
                 break
 
             case 'Update Employee Role':
-                employeeUpdate();
+                updateEmployee();
                 break
 
             case 'Exit':
@@ -87,7 +87,7 @@ const EmployeeView = async () => {
     console.log('Employees Menu');
     try {
         let query = 'SELECT * FROM employee';
-        connection.query(query, function (err, res){
+        connection.query(query, function (err, res) {
             if (err) throw err;
             let employeeArray = [];
             res.forEach(employee => employeeArray.push(employee));
@@ -101,12 +101,11 @@ const EmployeeView = async () => {
 }
 
 //the Department Selection view will be here next. 
-const DepartmentView = asyn () => {
+const DepartmentView = async () => {
     console.log('Departments Menu');
     try {
         let query = 'SELECT * FROM department';
-        connection.query(query, function (err, res)
-        {
+        connection.query(query, function (err, res) {
             if (err) throw err;
             let departmentArray = [];
             res.forEach(department => departmentArray.push(department));
@@ -124,7 +123,7 @@ const RoleView = async () => {
     console.log('Role Menu');
     try {
         let query = 'SELECT * FROM role';
-        connection.query(query, function (err, res){
+        connection.query(query, function (err, res) {
             if (err) throw err;
             let RoleArray = [];
             res.forEach(role => RoleArray.push(role));
@@ -137,36 +136,182 @@ const RoleView = async () => {
     };
 }
 //Need to add the selection to add a new employee.
-    const employeeAdd = async () => {
-        try {
-            console.log('Add Employee');
-            let RolesAdded = await connection.query("SELECT * FROM role");
-            let ManagersAdded = await connection.query("SELECT * FROM Employee");
-            let Answer = await inquirer.prompt([
-            {name: 'FirstName',
-            type: 'input',
-            message: 'What is the Employees first name?'},
-            {name: 'LastName',
-            type: 'input',
-            message: 'What is the Employees last name?'},
-            {name: 'EmployeeRoleId',
-            type:'list'
-            choices:RolesAdded.map((role)+> {
-                return {
-                    name: role.title,
-                    value: role.id
-                }
-            }),
-        message:"What is the Employee's role ID?"
-    },
-    {
+const employeeAdd = async () => {
+    try {
+        console.log('Add Employee');
+        let RolesAdded = await connection.query("SELECT * FROM role");
+        let ManagersAdded = await connection.query("SELECT * FROM Employee");
+        let answer = await inquirer.prompt([
+            {
+                name: 'FirstName',
+                type: 'input',
+                message: 'What is the Employees first name?'
+            },
+            {
+                name: 'LastName',
+                type: 'input',
+                message: 'What is the Employees last name?'
+            },
+            {
+                name: 'EmployeeRoleId',
+                type: 'list',
+                choices: RolesAdded.map((role) => {
+                    return {
+                        name: role.title,
+                        value: role.id
+                    }
+                }),
+                message: "What is the Employee's Role ID?"
+            },
+            {
+                name: 'EmployeeManagerId',
+                type: 'list',
+                choices: ManagersAdded.map((manager) => {
+                    return {
+                        name: manager.First_Name + " " + manager.Last_Name,
+                        value: manager.id
+                    }
+                }),
+                message: "What is the Manager's Id for this Employee?"
+            }
+        ])
 
-    }
-            ])
-        }
-    }
+        let result = await connection.query("INSERT INTO employee SET ?", {
+            First_Name: answer.FirstName,
+            Last_Name: answer.LastName,
+            roleID: (answer.EmployeeRoleId),
+            manager_id: (answer.EmployeeManagerId)
+        });
+
+        console.log(`${answer.FirstName} ${answer.LastName} was added successfully.\n`);
+        initialize();
+    } catch (err) {
+        console.log(err);
+        initialize();
+    };
+}
+
 //Need to add the selection to add a new department.
-//Need to add the selection to add a new role.
-//Need to add the selection to update the role for a specific employee. 
+const departmentAdd = async () => {
+    try {
+        console.log('Add Department');
 
-    
+        let answer = await inquirer.prompt([
+            {
+                name: 'DepartmentName',
+                type: 'input',
+                message: 'What is the name of the the new department you are adding?'
+            }
+        ]);
+
+        let result = await connection.query("INSERT INTO department SET ?", {
+            departmentContext: answer.DepartmentName
+        });
+        console.log(`${answer.DepartmentName} added succesfully to the list of departments. \n`)
+        initialize();
+    } catch (err) {
+        console.log(err);
+        initialize();
+    };
+}
+
+//Need to add the selection to add a new role.
+const AddRole = async () => {
+    try {
+        console.log('Role Added');
+
+        let departments = await connection.query("SELECT * FROM department")
+
+        let Answer = await inquirer.prompt([
+            {
+                name: 'title',
+                type: 'input',
+                message: 'What is the name of the role you are adding?'
+            },
+            {
+                name: 'salary',
+                type: 'input',
+                message: 'What salary does this role deserve?'
+            },
+            {
+                name: 'departmentID',
+                type: 'list',
+                choices: departments.map((departmentID) => {
+                    return {
+                        name: departmentID.departmentContext,
+                        value: departmentID.id
+                    }
+                }),
+                message: 'What department IS of this role is it associated with?',
+            }
+        ]);
+
+        let departmentChosen;
+        for (i = 0; i < departments.length; i++) {
+            if (departments[i].department_ID === answer.choice) {
+                departmentChosen = departments[i];
+            };
+        }
+        let result = await connection.query("INSERT INTO role SET ?", {
+            title: answer.title,
+            slary: answer.salary,
+            department_ID: answer.departmentID
+        })
+
+        console.log(`${answer.title} The Role was added successfully! \n`)
+        initialize();
+
+    } catch (err) {
+        console.log(err);
+        initialize();
+    };
+}
+
+//Need to add the selection to update the role for a specific employee.
+const updateEmployee = async () => {
+    try {
+        console.log('Employee got an Update');
+        
+        let employees = await connection.query("SELECT * FROM employee");
+
+        let employeeSelected = await inquirer.prompt([
+            {
+                name: 'employee',
+                type: 'list',
+                choices: employees.map((employeeName) => {
+                    return {
+                        name: employeeName.first_name + " " + employeeName.last_name,
+                        value: employeeName.id
+                    }
+                }),
+                message: 'Please choose an employee to update.'
+            }
+        ]);
+
+        let roles = await connection.query("SELECT * FROM role");
+
+        let roleSelected = await inquirer.prompt([
+            {
+                name: 'role',
+                type: 'list',
+                choices: roles.map((nameRole) => {
+                    return {
+                        name: nameRole.title,
+                        value: nameRole.id
+                    }
+                }),
+                message: 'Please select the role to update the employee with.'
+            }
+        ]);
+
+        let result = await connection.query("UPDATE employee SET ? WHERE ?", [{ role_id: roleSelected.role }, { id: employeeSelected.employee }]);
+
+        console.log(`The role was successfully updated to our list.\n`);
+        initialize();
+
+    } catch (err) {
+        console.log(err);
+        initialize();
+    };
+}
+
