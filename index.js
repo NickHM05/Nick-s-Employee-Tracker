@@ -1,5 +1,5 @@
 //Dependencies
-const mysql = require('mysql2');
+const mysql = require('mysql');
 const inquirer = require('inquirer');
 const consoleTable = require('console.table');
 const util = require('util');
@@ -22,7 +22,7 @@ connection.connect(function (err) {
 })
 
 console.table(
-    "\n,-----------Nick's Employee Tracker--------\n"
+    "\n-----------Nick's Employee Tracker--------\n"
 )
 
 //Bring up the menu for the user to use
@@ -140,7 +140,7 @@ const employeeAdd = async () => {
     try {
         console.log('Add Employee');
         let RolesAdded = await connection.query("SELECT * FROM role");
-        let ManagersAdded = await connection.query("SELECT * FROM Employee");
+        let ManagersAdded = await connection.query("SELECT * FROM employee");
         let answer = await inquirer.prompt([
             {
                 name: 'FirstName',
@@ -179,7 +179,7 @@ const employeeAdd = async () => {
         let result = await connection.query("INSERT INTO employee SET ?", {
             First_Name: answer.FirstName,
             Last_Name: answer.LastName,
-            roleID: (answer.EmployeeRoleId),
+            role_id: (answer.EmployeeRoleId),
             manager_id: (answer.EmployeeManagerId)
         });
 
@@ -205,7 +205,7 @@ const departmentAdd = async () => {
         ]);
 
         let result = await connection.query("INSERT INTO department SET ?", {
-            departmentContext: answer.DepartmentName
+            department_name: answer.DepartmentName
         });
         console.log(`${answer.DepartmentName} added succesfully to the list of departments. \n`)
         initialize();
@@ -222,7 +222,7 @@ const AddRole = async () => {
 
         let departments = await connection.query("SELECT * FROM department")
 
-        let Answer = await inquirer.prompt([
+        let answer = await inquirer.prompt([
             {
                 name: 'title',
                 type: 'input',
@@ -238,7 +238,7 @@ const AddRole = async () => {
                 type: 'list',
                 choices: departments.map((departmentID) => {
                     return {
-                        name: departmentID.departmentContext,
+                        name: departmentID.department_name,
                         value: departmentID.id
                     }
                 }),
@@ -254,7 +254,7 @@ const AddRole = async () => {
         }
         let result = await connection.query("INSERT INTO role SET ?", {
             title: answer.title,
-            slary: answer.salary,
+            salary: answer.salary,
             department_ID: answer.departmentID
         })
 

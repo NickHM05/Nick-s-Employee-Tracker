@@ -1,29 +1,4 @@
-INSEERT INTO Department(name)
-VALUES
-    ('Executive'),
-    ('Engineering'),
-    ('Sales'),
-    ('Finance'),
-    ('Legal');
-
-INSERT INTO Role (Title, Salary, DepartmentId)
-VALUES
-    ('CEO', '$300,000', 1),
-    ('Director of Engineering', '225,000', 2),
-    ('Lead Engineer', '$125,000', 2),
-    ('Engineer', '$77,000', 2),
-    ('Engineering Intern', '$40,000', 2),
-    ('Sales Director', '$250,000', 3),
-    ('Sales Lead Management', '$110,000', 3),
-    ('Salesperson', '$80,000', 3),
-    ('CFO', '$275,000', 4),
-    ('Head Accountant', '$110,000', 4),
-    ('Accountant', '$75,000', 4),
-    ('Corporate Attorney', '175,000', 5),
-    ('Contract Lawyer', '$100,000', 5),
-    ('Legal Assitant', '$50,000', 5);
-
-INSERT INTO Employee (First_Name, LastName, RoleId, ManagerId)
+INSERT INTO employee (First_Name, Last_Name, role_id, manager_id)
 VALUES
     ('David', 'Wallace', 1, NULL),
     ('Jim', 'Halpert', 2, 1),
@@ -43,3 +18,29 @@ VALUES
     ('Daryll', 'Philbin', 13, 12),
     ('Pam', 'Beesly', 13, 12),
     ('Erin', 'Hannon', 14, 12);
+    
+INSERT INTO department (department_name)
+VALUES
+    ('Executive'),
+    ('Engineering'),
+    ('Sales'),
+    ('Finance'),
+    ('Legal');
+
+INSERT INTO role (title, salary, department_ID)
+VALUES
+    ('CEO', '300000', 1),
+    ('Director of Engineering', '225000', 2),
+    ('Lead Engineer', '125000', 2),
+    ('Engineer', '77000', 2),
+    ('Engineering Intern', '40000', 2),
+    ('Sales Director', '250000', 3),
+    ('Sales Lead Management', '110000', 3),
+    ('Salesperson', '80000', 3),
+    ('CFO', '275000', 4),
+    ('Head Accountant', '110000', 4),
+    ('Accountant', '75000', 4),
+    ('Corporate Attorney', '175000', 5),
+    ('Contract Lawyer', '100000', 5),
+    ('Legal Assitant', '50000', 5);
+
